@@ -1,15 +1,33 @@
 {
-    "name": "simple-vibrancy",
-    "publisher": "joseph",
-    "displayName": "Simple Vibrancy",
-    "description": "A simple VSCode extension to add a transparent background and highlight the current line with a shortcut",
-    "version": "0.0.5",
+    "name": "line-vibrancy",
+    "publisher": "Tn Song",
+    "displayName": "Line Vibrancy",
+    "description": "Adds a transparent background to VSCode and highlights the current line with a shortcut (Cmd+Shift+Z). Requires a restart to apply transparency.",
+    "version": "0.0.1",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yourusername/line-vibrancy"
+    },
+    "bugs": {
+        "url": "https://github.com/yourusername/line-vibrancy/issues"
+    },
+    "homepage": "https://github.com/yourusername/line-vibrancy#readme",
     "engines": {
         "vscode": "^1.60.0"
     },
     "categories": [
-        "Other"
+        "Other",
+        "Themes"
     ],
+    "keywords": [
+        "vibrancy",
+        "transparency",
+        "highlight",
+        "theme",
+        "customization"
+    ],
+    "icon": "icon.png",
     "activationEvents": [
         "*"
     ],
@@ -17,33 +35,38 @@
     "contributes": {
         "commands": [
             {
-                "command": "simpleVibrancy.enableVibrancy",
-                "title": "Simple Vibrancy: Enable Transparency"
+                "command": "lineVibrancy.enableVibrancy",
+                "title": "Line Vibrancy: Enable Transparency"
             },
             {
-                "command": "simpleVibrancy.disableVibrancy",
-                "title": "Simple Vibrancy: Disable Transparency"
+                "command": "lineVibrancy.disableVibrancy",
+                "title": "Line Vibrancy: Disable Transparency"
             },
             {
-                "command": "simpleVibrancy.toggleHighlight",
-                "title": "Simple Vibrancy: Toggle Current Line Highlight"
+                "command": "lineVibrancy.toggleHighlight",
+                "title": "Line Vibrancy: Toggle Current Line Highlight"
             }
         ],
         "keybindings": [
             {
-                "command": "simpleVibrancy.toggleHighlight",
+                "command": "lineVibrancy.toggleHighlight",
                 "key": "cmd+shift+z",
                 "mac": "cmd+shift+z",
                 "when": "editorTextFocus"
             }
         ],
         "configuration": {
-            "title": "Simple Vibrancy",
+            "title": "Line Vibrancy",
             "properties": {
-                "simpleVibrancy.customCSS": {
+                "lineVibrancy.customCSS": {
                     "type": "string",
                     "default": "",
-                    "description": "Path to the custom CSS file for vibrancy effect"
+                    "description": "Path to the custom CSS file for vibrancy effect. Set automatically by the extension."
+                },
+                "lineVibrancy.enableVibrancy": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable the transparent background effect. Requires a VSCode restart to apply or remove."
                 }
             }
         }
@@ -51,11 +74,14 @@
     "scripts": {
         "lint": "eslint .",
         "pretest": "npm run lint",
-        "test": "node ./test/runTest.js"
+        "test": "node ./test/runTest.js",
+        "package": "vsce package",
+        "publish": "vsce publish"
     },
     "devDependencies": {
+        "@types/vscode": "^1.60.0",
         "@types/node": "^16.0.0",
-        "@types/vscode": "^1.101.0",
-        "eslint": "^7.32.0"
+        "eslint": "^7.32.0",
+        "vsce": "^2.15.0"
     }
 }

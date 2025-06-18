@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "copy-css",
+            "label": "copyCss",
             "type": "shell",
             "command": "mkdir -p ${workspaceFolder}/.vscode-test/user-data && cp ${workspaceFolder}/vibrancy.css ${workspaceFolder}/.vscode-test/user-data/vibrancy.css",
             "problemMatcher": []

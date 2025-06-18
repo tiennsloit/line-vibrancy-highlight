@@ -11,7 +11,7 @@
                 "--disable-extensions"
             ],
             "outFiles": ["${workspaceFolder}/out/**/*.js"],
-            "preLaunchTask": "copy-css"
+            "preLaunchTask": "copyCss"
         }
     ]
 }
