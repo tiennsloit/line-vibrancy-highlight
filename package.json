@@ -1,0 +1,61 @@
+{
+    "name": "simple-vibrancy",
+    "publisher": "joseph",
+    "displayName": "Simple Vibrancy",
+    "description": "A simple VSCode extension to add a transparent background and highlight the current line with a shortcut",
+    "version": "0.0.5",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "simpleVibrancy.enableVibrancy",
+                "title": "Simple Vibrancy: Enable Transparency"
+            },
+            {
+                "command": "simpleVibrancy.disableVibrancy",
+                "title": "Simple Vibrancy: Disable Transparency"
+            },
+            {
+                "command": "simpleVibrancy.toggleHighlight",
+                "title": "Simple Vibrancy: Toggle Current Line Highlight"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "simpleVibrancy.toggleHighlight",
+                "key": "cmd+shift+z",
+                "mac": "cmd+shift+z",
+                "when": "editorTextFocus"
+            }
+        ],
+        "configuration": {
+            "title": "Simple Vibrancy",
+            "properties": {
+                "simpleVibrancy.customCSS": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to the custom CSS file for vibrancy effect"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "node ./test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/node": "^16.0.0",
+        "@types/vscode": "^1.101.0",
+        "eslint": "^7.32.0"
+    }
+}

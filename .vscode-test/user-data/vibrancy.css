@@ -1,0 +1,8 @@
+.monaco-workbench {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+.monaco-workbench .part.titlebar {
+    background: transparent !important;
+}
