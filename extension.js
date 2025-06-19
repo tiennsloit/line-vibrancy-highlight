@@ -2,6 +2,29 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 
+let constants;
+try {
+    constants = require('./constants');
+} catch (error) {
+    console.error('LineVibrancy: Failed to load constants:', error.message);
+    constants = {
+        DIM_OPACITY: '0.2',
+        DIM_BACKGROUND_COLOR: 'rgba(0, 0, 0, 0)',
+        CSS_VIEW_LINES_OPACITY: '0.2',
+        CSS_VIEW_LINES_BACKGROUND: 'rgba(0, 0, 0, 0)',
+        CSS_CURRENT_LINE_OPACITY: '1',
+        CSS_CURRENT_LINE_BACKGROUND: 'transparent'
+    };
+}
+const {
+    DIM_OPACITY,
+    DIM_BACKGROUND_COLOR,
+    CSS_VIEW_LINES_OPACITY,
+    CSS_VIEW_LINES_BACKGROUND,
+    CSS_CURRENT_LINE_OPACITY,
+    CSS_CURRENT_LINE_BACKGROUND
+} = constants;
+
 function activate(context) {
     console.log('LineVibrancy: Extension activating...');
     const cssFilePath = path.join(context.extensionPath, 'vibrancy.css');
@@ -55,6 +78,20 @@ function activate(context) {
                     }
                 });
             }
+
+            // Check terminal GPU acceleration setting
+            const disableGpu = config.get('disableTerminalGpuAcceleration', false);
+            if (disableGpu) {
+                const terminalConfig = vscode.workspace.getConfiguration('terminal.integrated');
+                const currentGpuSetting = terminalConfig.get('gpuAcceleration');
+                if (currentGpuSetting !== 'off') {
+                    await terminalConfig.update('gpuAcceleration', 'off', vscode.ConfigurationTarget.Global);
+                    console.log('LineVibrancy: Set terminal.integrated.gpuAcceleration to "off"');
+                    vscode.window.showInformationMessage(
+                        'LineVibrancy: Disabled terminal GPU acceleration to prevent rendering issues. Restart VSCode to apply.'
+                    );
+                }
+            }
         } catch (error) {
             console.error('LineVibrancy: Failed to enable vibrancy:', error.message);
             vscode.window.showErrorMessage(`LineVibrancy: Failed to enable vibrancy - ${error.message}`);
@@ -70,21 +107,30 @@ function activate(context) {
                 dimDecorationType.dispose();
             }
 
+            const config = vscode.workspace.getConfiguration('lineVibrancy');
+            const dimOpacity = config.get('dimOpacity', DIM_OPACITY);
+
             dimDecorationType = vscode.window.createTextEditorDecorationType({
-                opacity: '0.2',
-                backgroundColor: 'rgba(0, 0, 0, 0)'
+                opacity: dimOpacity,
+                backgroundColor: DIM_BACKGROUND_COLOR
             });
 
+            // Get all cursor positions (supports multiple cursors)
+            const cursorLines = new Set();
+            editor.selections.forEach(selection => {
+                cursorLines.add(selection.active.line);
+            });
+
+            // Dim all lines except those with cursors
             const ranges = [];
-            const currentLine = editor.selection.active.line;
             for (let i = 0; i < editor.document.lineCount; i++) {
-                if (i !== currentLine) {
+                if (!cursorLines.has(i)) {
                     const range = new vscode.Range(i, 0, i, editor.document.lineAt(i).text.length);
                     ranges.push(range);
                 }
             }
             editor.setDecorations(dimDecorationType, ranges);
-            console.log('LineVibrancy: Highlight decorations applied');
+            console.log('LineVibrancy: Highlight decorations applied for', cursorLines.size, 'cursor(s)');
         } else {
             if (dimDecorationType) {
                 editor.setDecorations(dimDecorationType, []);
@@ -124,23 +170,26 @@ function activate(context) {
             console.log('LineVibrancy: Highlight toggled, highlightActive:', isHighlightActive);
             updateHighlightDecorations();
 
+            const config = vscode.workspace.getConfiguration('lineVibrancy');
+            const dimOpacity = config.get('dimOpacity', CSS_VIEW_LINES_OPACITY);
+
             const cssContent = isHighlightActive ? baseVibrancyCSS + `
                 .monaco-editor .view-lines {
-                    background: rgba(0, 0, 0, 0.2) !important;
+                    background: ${CSS_VIEW_LINES_BACKGROUND} !important;
                 }
                 .monaco-editor .view-line {
-                    opacity: 0.2 !important;
+                    opacity: ${dimOpacity} !important;
                 }
                 .monaco-editor .current-line {
-                    opacity: 1 !important;
-                    background: transparent !important;
+                    opacity: ${CSS_CURRENT_LINE_OPACITY} !important;
+                    background: ${CSS_CURRENT_LINE_BACKGROUND} !important;
                 }
             ` : baseVibrancyCSS;
             fs.writeFileSync(cssFilePath, cssContent);
             console.log('LineVibrancy: vibrancy.css updated');
 
-            const config = vscode.workspace.getConfiguration('lineVibrancy');
-            if (config.get('customCSS')) {
+            const configCSS = config.get('customCSS');
+            if (configCSS) {
                 await config.update('customCSS', cssFilePath, vscode.ConfigurationTarget.Global);
                 if (!isDebugMode) {
                     vscode.window.showInformationMessage(`LineVibrancy: Highlight effect ${isHighlightActive ? 'enabled' : 'disabled'}. Restart VSCode to apply in non-debug mode.`);

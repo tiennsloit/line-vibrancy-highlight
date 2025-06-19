@@ -2,7 +2,7 @@
     "name": "line-vibrancy",
     "publisher": "Tn Song",
     "displayName": "Line Vibrancy",
-    "description": "Adds a transparent background to VSCode and highlights the current line with a shortcut (Cmd+Shift+Z). Requires a restart to apply transparency.",
+    "description": "Adds a transparent background to VSCode and highlights the current line(s) with a shortcut (Cmd+Shift+Z). Requires a restart to apply transparency.",
     "version": "0.0.1",
     "license": "MIT",
     "repository": {
@@ -67,6 +67,16 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Enable the transparent background effect. Requires a VSCode restart to apply or remove."
+                },
+                "lineVibrancy.disableTerminalGpuAcceleration": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disable GPU acceleration for the terminal to prevent rendering issues with transparency. Requires a VSCode restart."
+                },
+                "lineVibrancy.dimOpacity": {
+                    "type": "string",
+                    "default": "0.2",
+                    "description": "Opacity for non-active lines when the highlight effect is enabled (0.0 to 1.0). Lower values make non-active lines more transparent."
                 }
             }
         }
