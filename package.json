@@ -2,7 +2,7 @@
     "name": "line-vibrancy",
     "publisher": "tiennsloit",
     "displayName": "Line Vibrancy",
-    "description": "Adds a transparent background to VSCode and highlights the current line(s) with a shortcut (Cmd+Shift+Z). Requires a restart to apply transparency.",
+    "description": "Adds a overlay background to current tab of VSCode and highlights the current line(s) with a shortcut (Cmd+Alt+Z). Requires a restart to apply Overlay.",
     "version": "0.0.1",
     "license": "MIT",
     "repository": {
@@ -22,7 +22,7 @@
     ],
     "keywords": [
         "vibrancy",
-        "transparency",
+        "Overlay",
         "highlight",
         "theme",
         "customization"
@@ -37,11 +37,11 @@
         "commands": [
             {
                 "command": "lineVibrancy.enableVibrancy",
-                "title": "Line Vibrancy: Enable Transparency"
+                "title": "Line Vibrancy: Enable Overlay"
             },
             {
                 "command": "lineVibrancy.disableVibrancy",
-                "title": "Line Vibrancy: Disable Transparency"
+                "title": "Line Vibrancy: Disable Overlay"
             },
             {
                 "command": "lineVibrancy.toggleHighlight",
@@ -79,7 +79,7 @@
                 "lineVibrancy.disableTerminalGpuAcceleration": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Disable GPU acceleration for the terminal to prevent rendering issues with transparency. Requires a VSCode restart."
+                    "description": "Disable GPU acceleration for the terminal to prevent rendering issues with Overlay. Requires a VSCode restart."
                 },
                 "lineVibrancy.dimOpacity": {
                     "type": "string",

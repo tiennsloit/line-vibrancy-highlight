@@ -26,9 +26,16 @@ const {
 } = constants;
 
 function activate(context) {
-    console.log('LineVibrancy: Extension activating...');
+    const isDebugMode = process.env.VSCODE_PID !== undefined;
+    const log = (...args) => {
+        if (isDebugMode) {
+            console.log(...args);
+        }
+    };
+
+    log('LineVibrancy: Extension activating...');
     const cssFilePath = path.join(context.extensionPath, 'vibrancy.css');
-    console.log('LineVibrancy: CSS file path:', cssFilePath);
+    log('LineVibrancy: CSS file path:', cssFilePath);
     let isHighlightActive = false;
     let dimDecorationType = null;
 
@@ -43,34 +50,33 @@ function activate(context) {
         }
     `;
 
-    const isDebugMode = process.env.VSCODE_PID !== undefined;
-    console.log('LineVibrancy: Debug mode:', isDebugMode);
+    log('LineVibrancy: Debug mode:', isDebugMode);
 
     const enableVibrancy = async () => {
         try {
             const config = vscode.workspace.getConfiguration('lineVibrancy');
             const enableVibrancy = config.get('enableVibrancy', true);
             if (!enableVibrancy) {
-                console.log('LineVibrancy: Vibrancy disabled via configuration');
+                log('LineVibrancy: Vibrancy disabled via configuration');
                 return;
             }
 
             if (process.platform === 'linux') {
                 vscode.window.showWarningMessage(
-                    'LineVibrancy: Transparency may not work on Linux due to limited backdrop-filter support. The highlight feature is still available.'
+                    'LineVibrancy: Overlay may not work on Linux due to limited backdrop-filter support. The highlight feature is still available.'
                 );
             }
 
             if (!fs.existsSync(cssFilePath)) {
                 fs.writeFileSync(cssFilePath, baseVibrancyCSS);
-                console.log('LineVibrancy: vibrancy.css created');
+                log('LineVibrancy: vibrancy.css created');
             }
             const currentCSS = config.get('customCSS');
             if (!currentCSS) {
                 await config.update('customCSS', cssFilePath, vscode.ConfigurationTarget.Global);
-                console.log('LineVibrancy: customCSS updated in settings');
+                log('LineVibrancy: customCSS updated in settings');
                 vscode.window.showInformationMessage(
-                    'LineVibrancy: Transparency enabled. Restart VSCode to apply the effect. To suppress the [Unsupported] warning, install the "Fix VSCode Checksums" extension.',
+                    'LineVibrancy: Overlay enabled. Restart VSCode to apply the effect. To suppress the [Unsupported] warning, install the "Fix VSCode Checksums" extension.',
                     'Open Extensions'
                 ).then(selection => {
                     if (selection === 'Open Extensions') {
@@ -86,7 +92,7 @@ function activate(context) {
                 const currentGpuSetting = terminalConfig.get('gpuAcceleration');
                 if (currentGpuSetting !== 'off') {
                     await terminalConfig.update('gpuAcceleration', 'off', vscode.ConfigurationTarget.Global);
-                    console.log('LineVibrancy: Set terminal.integrated.gpuAcceleration to "off"');
+                    log('LineVibrancy: Set terminal.integrated.gpuAcceleration to "off"');
                     vscode.window.showInformationMessage(
                         'LineVibrancy: Disabled terminal GPU acceleration to prevent rendering issues. Restart VSCode to apply.'
                     );
@@ -130,18 +136,18 @@ function activate(context) {
                 }
             }
             editor.setDecorations(dimDecorationType, ranges);
-            console.log('LineVibrancy: Highlight decorations applied for', cursorLines.size, 'cursor(s)');
+            log('LineVibrancy: Highlight decorations applied for', cursorLines.size, 'cursor(s)');
         } else {
             if (dimDecorationType) {
                 editor.setDecorations(dimDecorationType, []);
                 dimDecorationType.dispose();
                 dimDecorationType = null;
-                console.log('LineVibrancy: Highlight decorations cleared');
+                log('LineVibrancy: Highlight decorations cleared');
             }
         }
     };
 
-    console.log('LineVibrancy: Calling enableVibrancy');
+    log('LineVibrancy: Calling enableVibrancy');
     enableVibrancy();
 
     let enableVibrancyCommand = vscode.commands.registerCommand('lineVibrancy.enableVibrancy', enableVibrancy);
@@ -153,11 +159,11 @@ function activate(context) {
             await config.update('enableVibrancy', false, vscode.ConfigurationTarget.Global);
             if (fs.existsSync(cssFilePath)) {
                 fs.unlinkSync(cssFilePath);
-                console.log('LineVibrancy: vibrancy.css deleted');
+                log('LineVibrancy: vibrancy.css deleted');
             }
             isHighlightActive = false;
             updateHighlightDecorations();
-            vscode.window.showInformationMessage('LineVibrancy: Transparency disabled. Restart VSCode to remove the effect.');
+            vscode.window.showInformationMessage('LineVibrancy: Overlay disabled. Restart VSCode to remove the effect.');
         } catch (error) {
             console.error('LineVibrancy: Failed to disable vibrancy:', error.message);
             vscode.window.showErrorMessage(`LineVibrancy: Failed to disable vibrancy - ${error.message}`);
@@ -167,7 +173,7 @@ function activate(context) {
     let toggleHighlight = vscode.commands.registerCommand('lineVibrancy.toggleHighlight', async () => {
         try {
             isHighlightActive = !isHighlightActive;
-            console.log('LineVibrancy: Highlight toggled, highlightActive:', isHighlightActive);
+            log('LineVibrancy: Highlight toggled, highlightActive:', isHighlightActive);
             updateHighlightDecorations();
 
             const config = vscode.workspace.getConfiguration('lineVibrancy');
@@ -186,7 +192,7 @@ function activate(context) {
                 }
             ` : baseVibrancyCSS;
             fs.writeFileSync(cssFilePath, cssContent);
-            console.log('LineVibrancy: vibrancy.css updated');
+            log('LineVibrancy: vibrancy.css updated');
 
             const configCSS = config.get('customCSS');
             if (configCSS) {
@@ -213,7 +219,7 @@ function activate(context) {
     context.subscriptions.push(enableVibrancyCommand);
     context.subscriptions.push(disableVibrancy);
     context.subscriptions.push(toggleHighlight);
-    console.log('LineVibrancy: Extension activated successfully');
+    log('LineVibrancy: Extension activated successfully');
 }
 
 function deactivate() {
