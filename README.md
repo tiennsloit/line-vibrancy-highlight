@@ -36,7 +36,7 @@ Line Vibrancy adds a overlay background to Visual Studio Code and allows you to 
 - **No Overlay**: Ensure your platform supports `backdrop-filter` and restart VSCode after enabling.
 
 ## Contributing
-File issues or contribute at [GitHub](https://github.com/yourusername/line-vibrancy).
+File issues or contribute at [GitHub](https://github.com/tiennsloit/line-vibrancy-highlight).
 
 ## License
 MIT

@@ -3,16 +3,16 @@
     "publisher": "tiennsloit",
     "displayName": "Line Vibrancy",
     "description": "Adds a overlay background to current tab of VSCode and highlights the current line(s) with a shortcut (Cmd+Alt+Z). Requires a restart to apply Overlay.",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/yourusername/line-vibrancy"
+        "url": "https://github.com/tiennsloit/line-vibrancy-highlight"
     },
     "bugs": {
-        "url": "https://github.com/yourusername/line-vibrancy/issues"
+        "url": "https://github.com/tiennsloit/line-vibrancy-highlight/issues"
     },
-    "homepage": "https://github.com/yourusername/line-vibrancy#readme",
+    "homepage": "https://github.com/tiennsloit/line-vibrancy-highlight",
     "engines": {
         "vscode": "^1.75.0"
     },
@@ -36,14 +36,6 @@
     "contributes": {
         "commands": [
             {
-                "command": "lineVibrancy.enableVibrancy",
-                "title": "Line Vibrancy: Enable Overlay"
-            },
-            {
-                "command": "lineVibrancy.disableVibrancy",
-                "title": "Line Vibrancy: Disable Overlay"
-            },
-            {
                 "command": "lineVibrancy.toggleHighlight",
                 "title": "Line Vibrancy: Toggle Current Line Highlight"
             }
@@ -66,15 +58,10 @@
         "configuration": {
             "title": "Line Vibrancy",
             "properties": {
-                "lineVibrancy.customCSS": {
-                    "type": "string",
-                    "default": "",
-                    "description": "Path to the custom CSS file for vibrancy effect. Set automatically by the extension."
-                },
                 "lineVibrancy.enableVibrancy": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Enable the transparent background effect. Requires a VSCode restart to apply or remove."
+                    "description": "Enable the overlay background effect. Requires a VSCode restart to apply or remove."
                 },
                 "lineVibrancy.disableTerminalGpuAcceleration": {
                     "type": "boolean",
@@ -84,7 +71,7 @@
                 "lineVibrancy.dimOpacity": {
                     "type": "string",
                     "default": "0.2",
-                    "description": "Opacity for non-active lines when the highlight effect is enabled (0.0 to 1.0). Lower values make non-active lines more transparent."
+                    "description": "Opacity for non-active lines when the highlight effect is enabled (0.0 to 1.0). Lower values make non-active lines more overlay."
                 }
             }
         }

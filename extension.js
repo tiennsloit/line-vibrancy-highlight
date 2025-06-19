@@ -52,58 +52,6 @@ function activate(context) {
 
     log('LineVibrancy: Debug mode:', isDebugMode);
 
-    const enableVibrancy = async () => {
-        try {
-            const config = vscode.workspace.getConfiguration('lineVibrancy');
-            const enableVibrancy = config.get('enableVibrancy', true);
-            if (!enableVibrancy) {
-                log('LineVibrancy: Vibrancy disabled via configuration');
-                return;
-            }
-
-            if (process.platform === 'linux') {
-                vscode.window.showWarningMessage(
-                    'LineVibrancy: Overlay may not work on Linux due to limited backdrop-filter support. The highlight feature is still available.'
-                );
-            }
-
-            if (!fs.existsSync(cssFilePath)) {
-                fs.writeFileSync(cssFilePath, baseVibrancyCSS);
-                log('LineVibrancy: vibrancy.css created');
-            }
-            const currentCSS = config.get('customCSS');
-            if (!currentCSS) {
-                await config.update('customCSS', cssFilePath, vscode.ConfigurationTarget.Global);
-                log('LineVibrancy: customCSS updated in settings');
-                vscode.window.showInformationMessage(
-                    'LineVibrancy: Overlay enabled. Restart VSCode to apply the effect. To suppress the [Unsupported] warning, install the "Fix VSCode Checksums" extension.',
-                    'Open Extensions'
-                ).then(selection => {
-                    if (selection === 'Open Extensions') {
-                        vscode.commands.executeCommand('workbench.view.extensions');
-                    }
-                });
-            }
-
-            // Check terminal GPU acceleration setting
-            const disableGpu = config.get('disableTerminalGpuAcceleration', false);
-            if (disableGpu) {
-                const terminalConfig = vscode.workspace.getConfiguration('terminal.integrated');
-                const currentGpuSetting = terminalConfig.get('gpuAcceleration');
-                if (currentGpuSetting !== 'off') {
-                    await terminalConfig.update('gpuAcceleration', 'off', vscode.ConfigurationTarget.Global);
-                    log('LineVibrancy: Set terminal.integrated.gpuAcceleration to "off"');
-                    vscode.window.showInformationMessage(
-                        'LineVibrancy: Disabled terminal GPU acceleration to prevent rendering issues. Restart VSCode to apply.'
-                    );
-                }
-            }
-        } catch (error) {
-            console.error('LineVibrancy: Failed to enable vibrancy:', error.message);
-            vscode.window.showErrorMessage(`LineVibrancy: Failed to enable vibrancy - ${error.message}`);
-        }
-    };
-
     const updateHighlightDecorations = () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
@@ -148,27 +96,6 @@ function activate(context) {
     };
 
     log('LineVibrancy: Calling enableVibrancy');
-    enableVibrancy();
-
-    let enableVibrancyCommand = vscode.commands.registerCommand('lineVibrancy.enableVibrancy', enableVibrancy);
-
-    let disableVibrancy = vscode.commands.registerCommand('lineVibrancy.disableVibrancy', async () => {
-        try {
-            const config = vscode.workspace.getConfiguration('lineVibrancy');
-            await config.update('customCSS', undefined, vscode.ConfigurationTarget.Global);
-            await config.update('enableVibrancy', false, vscode.ConfigurationTarget.Global);
-            if (fs.existsSync(cssFilePath)) {
-                fs.unlinkSync(cssFilePath);
-                log('LineVibrancy: vibrancy.css deleted');
-            }
-            isHighlightActive = false;
-            updateHighlightDecorations();
-            vscode.window.showInformationMessage('LineVibrancy: Overlay disabled. Restart VSCode to remove the effect.');
-        } catch (error) {
-            console.error('LineVibrancy: Failed to disable vibrancy:', error.message);
-            vscode.window.showErrorMessage(`LineVibrancy: Failed to disable vibrancy - ${error.message}`);
-        }
-    });
 
     let toggleHighlight = vscode.commands.registerCommand('lineVibrancy.toggleHighlight', async () => {
         try {
@@ -193,18 +120,7 @@ function activate(context) {
             ` : baseVibrancyCSS;
             fs.writeFileSync(cssFilePath, cssContent);
             log('LineVibrancy: vibrancy.css updated');
-
-            const configCSS = config.get('customCSS');
-            if (configCSS) {
-                await config.update('customCSS', cssFilePath, vscode.ConfigurationTarget.Global);
-                if (!isDebugMode) {
-                    vscode.window.showInformationMessage(`LineVibrancy: Highlight effect ${isHighlightActive ? 'enabled' : 'disabled'}. Restart VSCode to apply in non-debug mode.`);
-                }
-            } else {
-                vscode.window.showWarningMessage('LineVibrancy: Enable vibrancy first to use the highlight effect.');
-                isHighlightActive = false;
-                updateHighlightDecorations();
-            }
+            
         } catch (error) {
             console.error('LineVibrancy: Failed to toggle highlight:', error.message);
             vscode.window.showErrorMessage(`LineVibrancy: Failed to toggle highlight - ${error.message}`);
@@ -216,8 +132,6 @@ function activate(context) {
         vscode.window.onDidChangeTextEditorSelection(updateHighlightDecorations)
     );
 
-    context.subscriptions.push(enableVibrancyCommand);
-    context.subscriptions.push(disableVibrancy);
     context.subscriptions.push(toggleHighlight);
     log('LineVibrancy: Extension activated successfully');
 }
