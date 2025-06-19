@@ -8,6 +8,14 @@ Line Vibrancy adds a overlay background to Visual Studio Code and allows you to 
 - **Current Line Highlight**: Toggle dimming of non-current lines with `Cmd+Alt+Z` (real-time).
 - **Platform Support**: Best on macOS and Windows (Acrylic); limited on Linux.
 
+## Screenshots
+
+### One Line Highlight
+![One Line Highlight](images/one.png)
+
+### Multiple Lines Highlight
+![Multiple Lines Highlight](images/multi.png)
+
 ## Installation
 
 1. Install from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=tiennsloit.line-vibrancy).
