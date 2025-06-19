@@ -1,6 +1,6 @@
 {
     "name": "line-vibrancy",
-    "publisher": "Tn Song",
+    "publisher": "tiennsloit",
     "displayName": "Line Vibrancy",
     "description": "Adds a transparent background to VSCode and highlights the current line(s) with a shortcut (Cmd+Shift+Z). Requires a restart to apply transparency.",
     "version": "0.0.1",
@@ -14,7 +14,7 @@
     },
     "homepage": "https://github.com/yourusername/line-vibrancy#readme",
     "engines": {
-        "vscode": "^1.60.0"
+        "vscode": "^1.75.0"
     },
     "categories": [
         "Other",
@@ -29,7 +29,8 @@
     ],
     "icon": "icon.png",
     "activationEvents": [
-        "*"
+        "onStartupFinished",
+        "onLanguage:*"
     ],
     "main": "./extension.js",
     "contributes": {
@@ -50,8 +51,15 @@
         "keybindings": [
             {
                 "command": "lineVibrancy.toggleHighlight",
-                "key": "cmd+shift+z",
-                "mac": "cmd+shift+z",
+                "key": "cmd+alt+z",
+                "mac": "cmd+alt+z",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "lineVibrancy.toggleHighlight",
+                "key": "ctrl+alt+z",
+                "win": "ctrl+alt+z",
+                "linux": "ctrl+alt+z",
                 "when": "editorTextFocus"
             }
         ],
