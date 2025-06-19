@@ -4,7 +4,7 @@ Line Vibrancy adds a overlay background to Visual Studio Code and allows you to 
 
 ## Features
 
-- **Transparent Background**: Applies a glass-like effect to VSCode’s window (requires a restart).
+- **Overlay Background**: Applies a glass-like effect to VSCode’s window (requires a restart).
 - **Current Line Highlight**: Toggle dimming of non-current lines with `Cmd+Alt+Z` (real-time).
 - **Platform Support**: Best on macOS and Windows (Acrylic); limited on Linux.
 
