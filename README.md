@@ -1,50 +1,45 @@
 # Line Vibrancy
 
-Line Vibrancy adds a overlay background to Visual Studio Code and allows you to highlight the current line with a shortcut (`Cmd+Alt+Z`). The Overlay effect creates a modern, vibrant look, while the highlight feature dims all lines except the current one for better focus.
+**Line Vibrancy** helps you highlight the current line (or lines) in Visual Studio Code by dimming all others with a background overlay. This is especially useful during code sharing or screen recordings, making it easier for others to follow along.
 
 ## Features
 
-- **Overlay Background**: Applies a glass-like effect to VSCode’s window (requires a restart).
-- **Current Line Highlight**: Toggle dimming of non-current lines with `Cmd+Alt+Z` (real-time).
-- **Platform Support**: Best on macOS and Windows (Acrylic); limited on Linux.
+- **Current Line Highlight**: Press `Cmd+Alt+Z` (or `Ctrl+Shift+Z` on Windows/Linux) to dim all lines except the current one.
+- **Custom Overlay Background**: Applies a configurable background to non-active lines to reduce visual noise.
+- **Platform Support**: Fully supported on macOS and Windows. Linux support may vary.
 
 ## Screenshots
 
 ### One Line Highlight
-![One Line Highlight](images/one.png)
+![One Line Highlight](https://m-s-tools.s3.ap-southeast-1.amazonaws.com/one.png)
 
 ### Multiple Lines Highlight
-![Multiple Lines Highlight](images/multi.png)
+![Multiple Lines Highlight](https://m-s-tools.s3.ap-southeast-1.amazonaws.com/multi.png)
 
 ## Installation
 
 1. Install from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=tiennsloit.line-vibrancy).
-2. Enable the extension. You’ll be prompted to restart VSCode to apply the Overlay effect.
-3. (Optional) Install the [Fix VSCode Checksums](https://marketplace.visualstudio.com/items?itemName=lehni.vscode-fix-checksums) extension to suppress the `[Unsupported]` warning caused by custom CSS.
+2. Enable the extension. You may need to restart VSCode to apply the overlay.
 
 ## Usage
 
-- **Enable Overlay**: Run `Line Vibrancy: Enable Overlay` from the Command Palette (`Cmd+Alt+P`) or enable automatically on activation. Restart VSCode to apply.
-- **Disable Overlay**: Run `Line Vibrancy: Disable Overlay` and restart VSCode.
-- **Toggle Highlight**: Press `Cmd+Alt+Z` (or `Ctrl+Shift+Z` on Windows/Linux) in an editor to dim all lines except the current one.
-- **Settings**:
-  - `lineVibrancy.enableVibrancy`: Enable/disable the Overlay effect (default: `true`).
-  - `lineVibrancy.customCSS`: Path to the CSS file (set automatically).
+- **Toggle Highlight**: Use `Cmd+Alt+Z` (or `Ctrl+Shift+Z` on Windows/Linux) to toggle the line highlight in any editor window.
 
 ## Platform Notes
 
-- **macOS**: Full support for Overlay.
-- **Windows**: Requires Acrylic (Windows 10/11). Enable Overlay effects in Settings > Personalization > Colors.
-- **Linux**: Overlay may not work due to limited `backdrop-filter` support. The highlight feature works normally.
+- **macOS**: Full support.
+- **Windows**: Fully supported on Windows 10/11.
+- **Linux**: Highlighting works, but some visual effects may be limited depending on your environment.
 
 ## Troubleshooting
 
-- **Restart Required**: Overlay changes require a VSCode restart.
-- **[Unsupported] Warning**: Install **Fix VSCode Checksums** to resolve.
-- **No Overlay**: Ensure your platform supports `backdrop-filter` and restart VSCode after enabling.
+- **Changes Not Visible**: Restart VSCode after enabling or disabling the overlay.
+- **No Highlight Effect**: Ensure your settings are enabled and restart VSCode.
 
 ## Contributing
-File issues or contribute at [GitHub](https://github.com/tiennsloit/line-vibrancy-highlight).
+
+Report issues or contribute to development on [GitHub](https://github.com/tiennsloit/line-vibrancy-highlight).
 
 ## License
+
 MIT
