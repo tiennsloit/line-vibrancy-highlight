@@ -69,22 +69,26 @@ function activate(context) {
                 backgroundColor: DIM_BACKGROUND_COLOR
             });
 
-            // Get all cursor positions (supports multiple cursors)
-            const cursorLines = new Set();
+            // Get all lines in selections (supporting multi-line selections and multiple cursors)
+            const vibrantLines = new Set();
             editor.selections.forEach(selection => {
-                cursorLines.add(selection.active.line);
+                const start = Math.min(selection.start.line, selection.end.line);
+                const end = Math.max(selection.start.line, selection.end.line);
+                for (let line = start; line <= end; line++) {
+                    vibrantLines.add(line);
+                }
             });
 
-            // Dim all lines except those with cursors
+            // Dim all lines except those in selections
             const ranges = [];
             for (let i = 0; i < editor.document.lineCount; i++) {
-                if (!cursorLines.has(i)) {
+                if (!vibrantLines.has(i)) {
                     const range = new vscode.Range(i, 0, i, editor.document.lineAt(i).text.length);
                     ranges.push(range);
                 }
             }
             editor.setDecorations(dimDecorationType, ranges);
-            log('LineVibrancy: Highlight decorations applied for', cursorLines.size, 'cursor(s)');
+            log('LineVibrancy: Highlight decorations applied for', vibrantLines.size, 'vibrant line(s)');
         } else {
             if (dimDecorationType) {
                 editor.setDecorations(dimDecorationType, []);
