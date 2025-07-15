@@ -8,3 +8,14 @@
             background: transparent !important;
         }
     
+                .monaco-editor .view-lines {
+                    background: rgba(0, 0, 0, 0) !important;
+                }
+                .monaco-editor .view-line {
+                    opacity: 0.2 !important;
+                }
+                .monaco-editor .current-line {
+                    opacity: 1 !important;
+                    background: transparent !important;
+                }
+            

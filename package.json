@@ -2,7 +2,7 @@
     "name": "line-vibrancy",
     "publisher": "tiennsloit",
     "displayName": "Line Vibrancy",
-    "description": "Adds a overlay background to current tab of VSCode and highlights the current line(s) with a shortcut (Cmd+Alt+Z). Requires a restart to apply Overlay.",
+    "description": "Adds an overlay background to current tab of VSCode and highlights the current line(s) with a shortcut (Cmd+Alt+Z). A VSCode restart may be required to apply the overlay",
     "version": "0.0.7",
     "license": "MIT",
     "repository": {

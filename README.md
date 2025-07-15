@@ -5,7 +5,6 @@
 ## Features
 
 - **Current Line Highlight**: Press `Cmd+Alt+Z` (or `Ctrl+Shift+Z` on Windows/Linux) to dim all lines except the current one.
-- **Custom Overlay Background**: Applies a configurable background to non-active lines to reduce visual noise.
 - **Platform Support**: Fully supported on macOS and Windows. Linux support may vary.
 
 ## Screenshots
@@ -14,7 +13,11 @@
 ![One Line Highlight](https://m-s-tools.s3.ap-southeast-1.amazonaws.com/one.png)
 
 ### Multiple Lines Highlight
+Press `Option + Click` on MacOS or `Alt + Click` on Windows to select multiple lines.
 ![Multiple Lines Highlight](https://m-s-tools.s3.ap-southeast-1.amazonaws.com/multi.png)
+
+### Select Lines to Highlight
+![Multiple Lines Highlight](https://m-s-tools.s3.ap-southeast-1.amazonaws.com/multi-selected.png)
 
 ## Installation
 
